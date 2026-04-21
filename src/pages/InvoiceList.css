@@ -1,0 +1,174 @@
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 64px;
+}
+
+.home-header h1 {
+  font-size: 36px;
+  line-height: 1.1;
+  letter-spacing: -1.13px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .header-actions {
+    gap: 40px;
+  }
+}
+
+.btn-new {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px 8px 8px;
+}
+
+.plus-icon {
+  background-color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.empty-state h2 {
+  margin-top: 64px;
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+.empty-state-img {
+  max-width: 240px;
+  width: 100%;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  max-width: 220px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.invoice-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoice-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 12px;
+  align-items: center;
+  background-color: var(--bg-element);
+  padding: 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.invoice-item:hover {
+  border-color: var(--color-primary);
+}
+
+.id {
+  font-weight: 700;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.hash {
+  color: #7e88c3;
+}
+
+.clientName {
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: right;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.dueDate {
+  color: var(--text-secondary);
+  font-size: 13px;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.total {
+  font-weight: 700;
+  font-size: 16px;
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.status-wrapper {
+  grid-column: 2 / 3;
+  grid-row: 2 / 4;
+  justify-self: end;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.arrow-icon {
+  color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .invoice-item {
+    grid-template-columns: 80px 140px 1fr 120px 140px 24px;
+    grid-template-rows: 1fr;
+    padding: 16px 24px 16px 32px;
+  }
+  .id {
+    grid-column: 1; grid-row: 1;
+  }
+  .dueDate {
+    grid-column: 2; grid-row: 1;
+  }
+  .clientName {
+    grid-column: 3; grid-row: 1;
+    text-align: left;
+  }
+  .total {
+    grid-column: 4; grid-row: 1;
+    text-align: right;
+    padding-right: 40px;
+  }
+  .status-wrapper {
+    grid-column: 5 / 7; grid-row: 1;
+    justify-self: end;
+  }
+}

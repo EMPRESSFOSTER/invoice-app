@@ -23,7 +23,7 @@ export function InvoiceList({ onNewInvoice }: InvoiceListProps) {
   const filteredInvoices = invoices.filter(inv => filter === 'all' || inv.status === filter);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
+    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'EUR' }).format(amount);
   };
 
   const formatDate = (dateString: string) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useInvoiceContext } from '../context/InvoiceContext';
 import { Invoice, InvoiceItem, InvoiceStatus } from '../types';
-import { Trash } from 'lucide-react';
+import { Trash, ChevronLeft } from 'lucide-react';
 import './InvoiceForm.css';
 
 interface InvoiceFormProps {
@@ -96,8 +96,15 @@ export function InvoiceForm({ invoiceId, onClose }: InvoiceFormProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (status: InvoiceStatus) => {
-    if (status !== 'draft' && !validate()) return;
+  const handleSubmit = (explicitStatus?: InvoiceStatus) => {
+    let finalStatus: InvoiceStatus = explicitStatus || 'pending';
+    
+    if (!invoiceId && !explicitStatus) {
+      const itemCount = formData.items?.length || 0;
+      finalStatus = itemCount === 1 ? 'paid' : 'pending';
+    }
+
+    if (finalStatus !== 'draft' && !validate()) return;
 
     const total = formData.items?.reduce((acc, item) => acc + item.total, 0) || 0;
 
@@ -106,7 +113,7 @@ export function InvoiceForm({ invoiceId, onClose }: InvoiceFormProps) {
       const invToUpdate = formData as Invoice;
       updateInvoice({
         ...invToUpdate,
-        status: status === 'draft' ? 'pending' : status, // keep existing status unless saving as draft but wait, usually editing doesn't change it to pending if it was paid, but let's say "save changes" just keeps status if not draft.
+        status: finalStatus === 'draft' ? (formData.status as InvoiceStatus) : finalStatus, 
         total
       });
     } else {
@@ -114,7 +121,7 @@ export function InvoiceForm({ invoiceId, onClose }: InvoiceFormProps) {
       const newInvoice: Invoice = {
         ...(formData as Omit<Invoice, 'id' | 'status' | 'total'>),
         id: generateId(),
-        status,
+        status: finalStatus,
         total
       };
       addInvoice(newInvoice);
@@ -122,9 +129,20 @@ export function InvoiceForm({ invoiceId, onClose }: InvoiceFormProps) {
     onClose();
   };
 
+  const handleBack = () => {
+    if (!invoiceId) {
+      handleSubmit('draft');
+    } else {
+      onClose();
+    }
+  };
+
   return (
-    <div className="form-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="form-overlay" onClick={(e) => e.target === e.currentTarget && handleBack()}>
       <div className="form-container" role="dialog" aria-modal="true" aria-label="Invoice Form">
+        <button type="button" className="back-link hide-desktop" style={{border: 'none', background: 'transparent', padding: 0, marginBottom: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)', fontWeight: '700'}} onClick={handleBack}>
+          <ChevronLeft size={16} /> Go back
+        </button>
         <h2>{invoiceId ? `Edit #${invoiceId}` : 'New Invoice'}</h2>
         
         <div className="form-scroll-area">
@@ -277,7 +295,7 @@ export function InvoiceForm({ invoiceId, onClose }: InvoiceFormProps) {
             {!invoiceId && (
               <button className="btn-dark" onClick={() => handleSubmit('draft')}>Save as Draft</button>
             )}
-            <button className="btn-primary" onClick={() => handleSubmit(invoiceId ? (formData.status as InvoiceStatus) : 'pending')}>
+            <button className="btn-primary" onClick={() => handleSubmit(invoiceId ? (formData.status as InvoiceStatus) : undefined)}>
               Save & Send
             </button>
           </div>
